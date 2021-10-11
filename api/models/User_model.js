@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const CryptoJS = require('crypto-js');
 var SHA256 = require("crypto-js/sha256");
 
-const User_models = mongoose.Schema({
+const User_models = new mongoose.Schema({
     email: { 
         type: String,
         trim: true,
@@ -36,8 +36,9 @@ User_models.method = {
     securePassword: function(plaiPassword) {
         if(!plaiPassword) return "";
         try {
-            var hmac = CryptoJS.algo.HMAC.create(CryptoJS.algo.SHA256,this.salt);
-            hmac.update(plaiPassword);
+            var hmac = SHA256(plaiPassword,this.salt);
+            console.log("SHA256: "+ hmac);
+            // hmac.update(plaiPassword);
             return hmac;
         } catch (error) {
             return "";
@@ -45,4 +46,4 @@ User_models.method = {
     }
 }
 
-module.exports = mongoose.model('users',User_models);
+module.exports = mongoose.model('user',User_models);
