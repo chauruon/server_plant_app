@@ -1,4 +1,4 @@
-const User = require('../models/User_model');
+const User = require('../models/user_model');
 exports.signup = (req, res) => {
     if (
       !req.body.email || !req.body.password

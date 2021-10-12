@@ -8,18 +8,22 @@ const production = new mongoose.Schema({
     },
     name: { 
         type: String,
-        trim: true ,
+        trim: true,
         required: true
     },
     desc: { 
         type: String,
-        trim: true ,
+        trim: true,
         required: true
     },
     picture:{
         type: String,
-        trim: true ,
+        trim: true,
         // required: true,
-    }
+    },
+    quantity:{
+        type: String,
+        trim: true,
+    },
 });
 module.exports = mongoose.model('production',production);
