@@ -2,12 +2,16 @@ const mongoose = require('mongoose');
 const CryptoJS = require('crypto-js');
 var SHA256 = require("crypto-js/sha256");
 
-const User_models = new mongoose.Schema({
+const user_models = new mongoose.Schema({
     email: { 
         type: String,
         trim: true,
         unique:true,
         required: true
+    },
+    name: { 
+        type: String,
+        trim: true,
     },
     password: { 
         type: String,
@@ -18,7 +22,7 @@ const User_models = new mongoose.Schema({
 
 },{timestamps:true});
 
-User_models.virtual('pass')
+user_models.virtual('pass')
     .set(function(pass) {
         this._password = pass
         this.salt = uuidv1()
@@ -29,7 +33,7 @@ User_models.virtual('pass')
         this._password
     })
 
-User_models.method = {
+    user_models.method = {
     authenticate: function(plaiPassword) {
         return this.securePassword(plaiPassword) == this.password
     },
@@ -46,4 +50,4 @@ User_models.method = {
     }
 }
 
-module.exports = mongoose.model('user',User_models);
+module.exports = mongoose.model('user',user_models);

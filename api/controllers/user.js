@@ -9,10 +9,7 @@ exports.signup = (req, res) => {
   
     var email = req.body.email ? {email: req.body.email} : {};
   
-    const new_user = new User({
-      password: req.body.password,
-      email: req.body.email,
-    });
+    const new_user = new User(req.body);
   
     User.find(email).then((data) => {
       if (data.length !== 0) {

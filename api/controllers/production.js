@@ -18,6 +18,7 @@ exports.create_product =  (req,res) => {
         res.status(500).send({
             status:false,
             message:'Thêm thất bại',
+            data : err.message
         })
     })
 }

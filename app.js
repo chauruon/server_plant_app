@@ -13,6 +13,7 @@ app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({
     extended: true,
 }));
+app.use(bodyParser.json({ type: 'application/*+json' }))
 app.use(bodyParser.json());
 app.use(express.json());
 app.use(cookieParser())
@@ -26,15 +27,28 @@ app.use('/api', routes);
 app.use((req,res,next)=>{
     const error = new Error('Not Found');
     error.status = 404;
-    next(error);
+    next(
+        res.json({
+            error:{
+                message:error.message
+            }
+        })
+    );
 });
+app.use((req,res)=>{
+        res.writeHead(200, { 'Content-Type': 'text/plain' });
+        res.end('ok');
+    }
+)
  app.use((error,req,res,next)=>{
     res.status(error.status || 500);
-    res.json({
-        error:{
-            message:error.message
-        }
-    });
+    next(
+        res.json({
+            error:{
+                message:error.message
+            }
+        })
+    )
  });
 
 module.exports = app;
