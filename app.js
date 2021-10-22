@@ -36,7 +36,8 @@ app.use((req,res,next)=>{
     );
 });
 app.use((req,res)=>{
-        res.writeHead(200, { 'Content-Type': 'text/plain' });
+        // res.setHeader(name, value) 
+        res.writeHead(200, { 'Content-Type': 'text/plain' });x
         res.end('ok');
     }
 )

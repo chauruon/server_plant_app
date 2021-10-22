@@ -36,17 +36,15 @@ exports.delete_product = async (req, res) =>{
             })
         }else if(!data){
             res.status(500).send({ 
-                status: false,
-                message: 'Server lỗi',
-                data : err
-            })
-            console.log(data)
-            
+                'status': false,
+                'message': 'Server lỗi',
+                'data' : err
+            })            
         }else{
             res.status(200).send({
-                status:true,
-                message: 'Xóa thành công',
-                data : data
+                'status':true,
+                'message': 'Xóa thành công',
+                'data' : data
             })
         }
     })
@@ -77,7 +75,6 @@ exports.get_product = (req,res) => {
           return data
         })
     } catch (error) {
-        console.log(error)
     }
   }
 

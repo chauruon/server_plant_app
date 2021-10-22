@@ -1,50 +1,55 @@
 const User = require('../models/user_model');
+const dotenv = require('dotenv');
+const jwt = require('jsonwebtoken');
+const { stringify } = require('uuid');
+
+dotenv.config();
+
 exports.signup = (req, res) => {
-    if (
-      !req.body.email || !req.body.password
-    ) {
-      res.status(400).send({message: 'Nhập thông tin'});
-      return;
+    if (!req.body.email || !req.body.password) {
+		res.status(400).send({message: 'Nhập thông tin'});
+		return;
     }
+	const{name, email,password} = req.body;
+    var emailInput = email ? {email: email} : {};
   
-    var email = req.body.email ? {email: req.body.email} : {};
-  
-    const new_user = new User(req.body);
-  
-    User.find(email).then((data) => {
-      if (data.length !== 0) {
-        return res.status(400).json({
-          status: false,
-          message: 'Email đã tồn tại',
-        });
-      } else {
-        new_user
-          .save(new_user)
-          .then((data) => {
-            if (data) {
-              res.status(200).json({
-                status: true,
-                message: 'Tạo tài khoản thành công',
-                data: data,
-              });
-            }
-          })
-          .catch((err) => {
-            res.status(500).json({
-              status: false,
-              message: 'Thất bại err',
-            });
-            console.log(err);
-          });
-      }
+    User.find(emailInput).then((data) => {
+		if (data.length !== 0) {
+			return res.status(400).json({
+			status: false,
+			message: 'Email đã tồn tại',
+			});
+		} else {
+			const new_user = new User({
+				email,
+				name,
+				password,
+				admin: true,
+			});
+			new_user.save()
+			.then((data) => {
+				if (data) {
+					res.status(200).send({
+						'status': true,
+						'message': 'Tạo tài khoản thành công',
+						'data': data,
+					});
+				}
+			})
+			.catch((err) => {
+				res.status(500).send({
+					'status': false,
+					'message': 'Thất bại err',
+				});
+				console.log(JSON.stringify(err.message));
+			});
+		}
     });
-  };
+};
 
   
 // đăng nhập user
 exports.SingIn = (req, res) => {
-  console.log(req.body.email);
-  console.log(req.body.password);
   if (!req.body.email || !req.body.password) {
     res.status(400).send({message: 'Nhập đầy đủ thông tin'});
     return;
@@ -55,26 +60,23 @@ exports.SingIn = (req, res) => {
     password: req.body.password,
   }).exec((err, user) => {
     if (err) {
-      res.status(500).send({
-        status: false,
-        message: 'user err',
-      });
-      console.log('Thất bại');
+		res.status(500).send({
+			'status': false,
+			'message': 'user err',
+		});
     }
     if (!user) {
-      res.status(400).send({
-        status: false,
-        message: 'user err',
-      });
-      console.log('thất bại');
-      return user;
+		res.status(400).send({
+			'status': false,
+			'message': 'user err',
+		});
+		return user;
     }
     res.status(200).send({
-      status: true,
-      message: 'Đăng nhập thành công',
-      data: user,
+		'status': true,
+		'message': 'Đăng nhập thành công',
+		'data': user,
     });
-    console.log(user);
   });
 };
 
