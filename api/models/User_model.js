@@ -1,8 +1,9 @@
 const mongoose = require('mongoose');
 const CryptoJS = require('crypto-js');
 var SHA256 = require("crypto-js/sha256");
+const Schema = mongoose.Schema; 
 
-const user_models = new mongoose.Schema({
+const user_models = new Schema({
     email: { 
         type: String,
         trim: true,
@@ -13,6 +14,10 @@ const user_models = new mongoose.Schema({
         type: String,
         trim: true,
     },
+    phone: {
+        type: String,
+        default: ''
+    },
     password: { 
         type: String,
         trim: true ,
@@ -21,5 +26,17 @@ const user_models = new mongoose.Schema({
     admin:{
         type: Boolean,
     },
+    orders: [
+        {
+          type: Schema.Types.ObjectId,
+          ref: 'Order'
+        }
+    ],
+    addresses: [
+        {
+          type: Schema.Types.ObjectId,
+          ref: 'Address'
+        }
+    ],
 });
 module.exports = mongoose.model('users',user_models);
