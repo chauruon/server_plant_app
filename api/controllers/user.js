@@ -24,7 +24,7 @@ exports.signup = (req, res) => {
 				email,
 				name,
 				password,
-				admin: true,
+				admin: false,
 			});
 			new_user.save()
 			.then((data) => {
